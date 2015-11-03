@@ -11,6 +11,7 @@ case "`uname`" in
 esac
 base=${bin_abs_path}/..
 client_mode="Simple"
+sync_configFile=$base/conf/
 logback_configurationFile=$base/conf/logback.xml
 export LANG=en_US.UTF-8
 export BASE=$base
@@ -60,13 +61,13 @@ esac
 
 str=`file $JAVA_HOME/bin/java | grep 64-bit`
 if [ -n "$str" ]; then
-	JAVA_OPTS="-server -Xms2048m -Xmx3072m -Xmn1024m -XX:SurvivorRatio=2 -XX:PermSize=96m -XX:MaxPermSize=256m -Xss256k -XX:-UseAdaptiveSizePolicy -XX:MaxTenuringThreshold=15 -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:+HeapDumpOnOutOfMemoryError"
+	JAVA_OPTS="-server -Xms512m -Xmx512m -Xmn256m -XX:SurvivorRatio=2 -XX:PermSize=96m -XX:MaxPermSize=256m -Xss256k -XX:-UseAdaptiveSizePolicy -XX:MaxTenuringThreshold=15 -XX:+DisableExplicitGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSCompactAtFullCollection -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:+HeapDumpOnOutOfMemoryError"
 else
 	JAVA_OPTS="-server -Xms1024m -Xmx1024m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:MaxPermSize=128m "
 fi
 
 JAVA_OPTS=" $JAVA_OPTS -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8"
-CANAL_OPTS="-DappName=otter-canal-example -Dlogback.configurationFile=$logback_configurationFile"
+CANAL_OPTS="-DappName=otter-canal-example -Dlogback.configurationFile=$logback_configurationFile -Dsync.conf=$sync_configFile"
 
 if [ -e $logback_configurationFile ]
 then 
@@ -82,11 +83,12 @@ then
 	echo LOG CONFIGURATION : $logback_configurationFile
 	echo client mode : $client_mode 
 	echo CLASSPATH :$CLASSPATH
-	if [ $client_mode == "Cluster" ] ; then 
-		$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $CANAL_OPTS -classpath .:$CLASSPATH com.alibaba.otter.canal.example.ClusterCanalClientTest 1>>$base/bin/nohup.out 2>&1 &
-	else 
-		$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $CANAL_OPTS -classpath .:$CLASSPATH com.alibaba.otter.canal.example.SimpleCanalClientTest 1>>$base/bin/nohup.out 2>&1 &
-	fi
+#	if [ $client_mode == "Cluster" ] ; then 
+#		$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $CANAL_OPTS -classpath .:$CLASSPATH com.alibaba.otter.canal.example.ClusterCanalClientTest 1>>$base/bin/nohup.out 2>&1 &
+#	else 
+#		$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $CANAL_OPTS -classpath .:$CLASSPATH com.alibaba.otter.canal.example.SimpleCanalClientTest 1>>$base/bin/nohup.out 2>&1 &
+#	fi
+	$JAVA $JAVA_OPTS $JAVA_DEBUG_OPT $CANAL_OPTS -classpath .:$CLASSPATH com.alibaba.otter.canal.sync.SyncServer 1>>$base/bin/nohup.out 2>&1 &
 	
 	echo $! > $base/bin/canal.pid 
 	echo "cd to $current_path for continue"

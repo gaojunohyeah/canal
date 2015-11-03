@@ -1,0 +1,1 @@
+/Users/rayjoy/gaojun/apache-maven-3.2.3/bin/mvn clean install -Dmaven.test.skip -Denv=release

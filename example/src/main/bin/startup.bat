@@ -20,7 +20,9 @@ set CANAL_OPTS= -DappName=otter-canal-example -Dlogback.configurationFile="%logb
 
 set JAVA_OPTS= %JAVA_MEM_OPTS% %JAVA_OPTS_EXT% %JAVA_DEBUG_OPT% %CANAL_OPTS%
 
-if "%client_mode%" == "Cluster"  
-	java %JAVA_OPTS% -classpath "%CLASSPATH%" com.alibaba.otter.canal.example.ClusterCanalClientTest
-else 
-	java %JAVA_OPTS% -classpath "%CLASSPATH%" com.alibaba.otter.canal.example.SimpleCanalClientTest
+::if "%client_mode%" == "Cluster"  
+::	java %JAVA_OPTS% -classpath "%CLASSPATH%" com.alibaba.otter.canal.example.ClusterCanalClientTest
+::else 
+::	java %JAVA_OPTS% -classpath "%CLASSPATH%" com.alibaba.otter.canal.example.SimpleCanalClientTest
+
+java %JAVA_OPTS% -classpath "%CLASSPATH%" com.alibaba.otter.canal.sync.SyncServer
