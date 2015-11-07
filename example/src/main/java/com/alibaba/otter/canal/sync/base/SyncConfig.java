@@ -13,12 +13,18 @@ public class SyncConfig {
 	// destination配置
 	private Map<String, DestinationConfig> DesMap = new HashMap<String, DestinationConfig>();
 	
+	private static String confPath;
+	
+	public String getConfPath(){
+		return confPath;
+	}
+	
 	/**
 	 * 加载同步配置
 	 */
 	public SyncConfig() {
 		// 加载基础配置
-		String confPath = System.getProperty("sync.conf");
+		confPath = System.getProperty("sync.conf");
 		if(null==confPath || "".equals(confPath)){
 			confPath = System.getProperty("user.dir") + Global.baseDir;
 		}

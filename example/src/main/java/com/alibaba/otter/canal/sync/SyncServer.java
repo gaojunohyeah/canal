@@ -46,6 +46,9 @@ public class SyncServer {
 
 			ClientMap.put(desName, client);
 		}
+		
+		// 定时器启动
+		JobScheduler.init(config.getConfPath());
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
@@ -58,6 +61,9 @@ public class SyncServer {
 
 					// 销毁配置以及redis链接
 					config.destroy();
+					
+					// 定时器关闭
+					JobScheduler.stop();
 				} catch (Throwable e) {
 					logger.warn("##something goes wrong when stopping canal:\n{}", ExceptionUtils.getFullStackTrace(e));
 				} finally {
