@@ -19,16 +19,19 @@ import com.alibaba.otter.canal.sync.client.RedisCanalClient;
 public class SyncServer {
 	protected final static Logger logger = LoggerFactory.getLogger(SyncServer.class);
 
+	/*
+	 * 全局配置
+	 */
+	public static SyncConfig config;
+
 	/**
-	 * 与canal服务器之间的连接map
-	 * key:destination名称
-	 * value:连接对象
+	 * 与canal服务器之间的连接map key:destination名称 value:连接对象
 	 */
 	private static Map<String, RedisCanalClient> ClientMap = new HashMap<String, RedisCanalClient>();
 
 	public static void main(String[] args) {
 		// 初始化配置 并启动连接池
-		final SyncConfig config = new SyncConfig();
+		config = new SyncConfig();
 
 		Set<String> desNames = config.getDesNames();
 		for (String desName : desNames) {
@@ -46,7 +49,7 @@ public class SyncServer {
 
 			ClientMap.put(desName, client);
 		}
-		
+
 		// 定时器启动
 		JobScheduler.init(config.getConfPath());
 
@@ -61,7 +64,7 @@ public class SyncServer {
 
 					// 销毁配置以及redis链接
 					config.destroy();
-					
+
 					// 定时器关闭
 					JobScheduler.stop();
 				} catch (Throwable e) {

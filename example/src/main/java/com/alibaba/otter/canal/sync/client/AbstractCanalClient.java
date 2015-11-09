@@ -107,5 +107,5 @@ public abstract class AbstractCanalClient {
 	}
 
 	// 消息处理
-	abstract public boolean handler(Message message);
+	abstract public boolean handler(Message message) throws Exception;
 }

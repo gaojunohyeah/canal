@@ -29,4 +29,12 @@ public class Global {
 	public static String DESTINATION_HOST_KEY = "sync.destination.host";
 	// destination端口
 	public static String DESTINATION_PORT_KEY = "sync.destination.port";
+	
+	// 默认匹配所有数据库的key
+	public static String ALL_DB_KEY = "all_db";
+	
+	public static long SECOND_TIME = 1000;
+	
+	public static String REDIS_PERIOD_APPEND = ".";
+	public static String REDIS_PERIOD_SPLIT = "\\.";
 }
